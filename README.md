@@ -1,32 +1,25 @@
 # 感情分析を用いたSNSフィルターシステムの開発
 ## 概要
-本コンポーネント群は、自作の音声認識システムを利用して字幕表示システム、議事録自動作成システム、スライド自動切り替えシステムの３つを実現するコンポーネント群です。  
 
-音声認識システムは、ウェブスクレイピングコンポーネントを利用して作成しており、このウェブスクレイピングコンポーネントは、URLと要素を指定することで他のシステムに流用することが可能です
+本システムはtwitterAPI,BERT,MeCab等を利用してSNSフィルターシステムを実現するコンポーネント群によって構成されています。  
+
 ## マニュアル
-[マニュアル](https://github.com/tbou30897/OpenRTM_meeting_assistance/blob/main/Documents/Manual.pdf)
+[マニュアル](https://github.com/tbou30897/OpenRTM_SNS_filter_system/tree/main/Documents/Manual.pdf)
 ## 開発環境
 言語：Python  
 OS：Windows10  
-RTミドルウェア：OpenRTM-aist-1.2.0
+RTミドルウェア：OpenRTM-aist-2.0.0
 ## 開発コンポーネント
-### NAME（氏名入力コンポーネント）  
-アクティベートされた時に、氏名を入力するコンポーネント
-### WebScraping（ウェブスクレイピングコンポーネント）
-アクティベートされた時に、指定された URL を開き、指定された要素を
-スクレイピングするコンポーネント。
-### JudgeTheElement（音声認識結果作成コンポーネント）
-受け取ったデータを、音声認識のみのデータと議事録の体裁に整えたデータを送信する。
-### TEXTtoSUBTITLE（字幕作成コンポーネント）
-送られてきたデータを受信して、Python 上で文字を表示する。
-### TEXTtoTEXTFILE（議事録作成コンポーネント）
-送られてきたデータを受信して、ディアクティベートされた時に議事録を
-テキストファイルとして作成する。
-### KeywordMatchConfirmation（文字列比較コンポーネント）
-アクティベートされた時に、スライドを変更する時のワードを入力する。受け取った音声認識結果がスライドを変更するワードと一致した場合は true、一致しなかっ
-た場合は false を 送信する。
-### KeyOutput（スライド切り替えコンポーネント）
-受信したデータが true か false かを判断し、true だった場合はパワーポイ
-ントに n キーを文字入力する。
+### twitter_api（twitteAPIコンポーネント）  
+twitterAPIを利用してtwitterからスクレイピングを行うコンポーネント
+### morphological_analysis（形態素解析コンポーネント）
+MeCabを利用して形態素解析を行うコンポーネント
+### restricted_word（誹謗中傷伏字化コンポーネント）
+規制単語リスト、形態素解析結果をもとに、ニュアンスを含めた誹謗中傷の伏せ字化を行うコンポーネント
+### sentiment_analysis（感情分析コンポーネント）
+BERTを利用して、感情分析（positive、negativeを-1~1の数値で出力）するコンポーネント
+### result_out（結果出力コンポーネント）
+送られてきたデータを受信して、結果出力を行うコンポーネント
+
 ## 動画
-https://youtu.be/CHZ-th2s5f0
+https://youtu.be/4y4wfGtY-S4
