@@ -1,1 +1,1 @@
-# OpenRTM_SNS_filter_system
+# 感情分析を用いたSNSフィルターシステムの開発
