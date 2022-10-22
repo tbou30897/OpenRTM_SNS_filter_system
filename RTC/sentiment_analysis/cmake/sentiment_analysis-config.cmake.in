@@ -1,0 +1,54 @@
+# sentiment_analysis CMake config file
+#
+# This file sets the following variables:
+# sentiment_analysis_FOUND - Always TRUE.
+# sentiment_analysis_INCLUDE_DIRS - Directories containing the sentiment_analysis include files.
+# sentiment_analysis_IDL_DIRS - Directories containing the sentiment_analysis IDL files.
+# sentiment_analysis_LIBRARIES - Libraries needed to use sentiment_analysis.
+# sentiment_analysis_DEFINITIONS - Compiler flags for sentiment_analysis.
+# sentiment_analysis_VERSION - The version of sentiment_analysis found.
+# sentiment_analysis_VERSION_MAJOR - The major version of sentiment_analysis found.
+# sentiment_analysis_VERSION_MINOR - The minor version of sentiment_analysis found.
+# sentiment_analysis_VERSION_REVISION - The revision version of sentiment_analysis found.
+# sentiment_analysis_VERSION_CANDIDATE - The candidate version of sentiment_analysis found.
+
+message(STATUS "Found sentiment_analysis-@PROJECT_VERSION@")
+set(sentiment_analysis_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(sentiment_analysis_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(sentiment_analysis_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(sentiment_analysis_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(sentiment_analysis_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(sentiment_analysis_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(sentiment_analysis_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(sentiment_analysis_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(sentiment_analysis_VERSION @PROJECT_VERSION@)
+set(sentiment_analysis_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(sentiment_analysis_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(sentiment_analysis_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(sentiment_analysis_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
