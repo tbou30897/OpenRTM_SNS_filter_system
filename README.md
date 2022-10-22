@@ -2,6 +2,7 @@
 ## 概要
 
 本システムはtwitterAPI,BERT,MeCab等を利用してSNSフィルターシステムを実現するコンポーネント群によって構成されています。  
+誹謗中傷の伏せ字化は、形態素解析結果の品詞から推測し、伏せ字化するようになっています。
 
 ## マニュアル
 [マニュアル](https://github.com/tbou30897/OpenRTM_SNS_filter_system/tree/main/Documents/Manual.pdf)
