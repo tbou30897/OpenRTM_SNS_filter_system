@@ -1,0 +1,54 @@
+# restricted_word CMake config file
+#
+# This file sets the following variables:
+# restricted_word_FOUND - Always TRUE.
+# restricted_word_INCLUDE_DIRS - Directories containing the restricted_word include files.
+# restricted_word_IDL_DIRS - Directories containing the restricted_word IDL files.
+# restricted_word_LIBRARIES - Libraries needed to use restricted_word.
+# restricted_word_DEFINITIONS - Compiler flags for restricted_word.
+# restricted_word_VERSION - The version of restricted_word found.
+# restricted_word_VERSION_MAJOR - The major version of restricted_word found.
+# restricted_word_VERSION_MINOR - The minor version of restricted_word found.
+# restricted_word_VERSION_REVISION - The revision version of restricted_word found.
+# restricted_word_VERSION_CANDIDATE - The candidate version of restricted_word found.
+
+message(STATUS "Found restricted_word-@PROJECT_VERSION@")
+set(restricted_word_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(restricted_word_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(restricted_word_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(restricted_word_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(restricted_word_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(restricted_word_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(restricted_word_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(restricted_word_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(restricted_word_VERSION @PROJECT_VERSION@)
+set(restricted_word_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(restricted_word_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(restricted_word_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(restricted_word_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
