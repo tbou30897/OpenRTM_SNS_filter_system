@@ -1,0 +1,16 @@
+2022-11-18 20:09:37,613 file.manager INFO 2.0.0
+2022-11-18 20:09:37,613 file.manager INFO Copyright (C) 2003-2022, Noriaki Ando and OpenRTM development team,
+2022-11-18 20:09:37,613 file.manager INFO   Intelligent Systems Research Institute, AIST,
+2022-11-18 20:09:37,613 file.manager INFO Copyright (C) 2022, Noriaki Ando and OpenRTM development team,
+2022-11-18 20:09:37,614 file.manager INFO   Industrial Cyber-Physical Research Center, AIST,
+2022-11-18 20:09:37,614 file.manager INFO   All right reserved.
+2022-11-18 20:09:37,614 file.manager INFO Manager starting.
+2022-11-18 20:09:37,614 file.manager INFO Starting local logging.
+2022-11-18 20:09:37,621 file.manager.namingmanager INFO NameServer connection succeeded: corba/localhost
+2022-11-18 20:09:41,702 file.ManagerServant INFO Master manager not found
+2022-11-18 20:09:41,703 file.LocalServiceAdmin INFO All the local services are enabled.
+2022-11-18 20:09:41,710 file.manager INFO Component type conf file: textouuut.conf loaded.
+2022-11-18 20:09:41,712 file.ec_base INFO setRate(1000000.000000) done
+2022-11-18 20:09:41,712 file.ec_base INFO setRate(1000.000000) done
+2022-11-18 20:09:41,713 file.rtobject INFO 1 execution context was created.
+2022-11-18 20:09:41,714 file.rtobject INFO Initial active configuration set is default.
