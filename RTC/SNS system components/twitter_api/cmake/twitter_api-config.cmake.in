@@ -1,0 +1,54 @@
+# twitter_api CMake config file
+#
+# This file sets the following variables:
+# twitter_api_FOUND - Always TRUE.
+# twitter_api_INCLUDE_DIRS - Directories containing the twitter_api include files.
+# twitter_api_IDL_DIRS - Directories containing the twitter_api IDL files.
+# twitter_api_LIBRARIES - Libraries needed to use twitter_api.
+# twitter_api_DEFINITIONS - Compiler flags for twitter_api.
+# twitter_api_VERSION - The version of twitter_api found.
+# twitter_api_VERSION_MAJOR - The major version of twitter_api found.
+# twitter_api_VERSION_MINOR - The minor version of twitter_api found.
+# twitter_api_VERSION_REVISION - The revision version of twitter_api found.
+# twitter_api_VERSION_CANDIDATE - The candidate version of twitter_api found.
+
+message(STATUS "Found twitter_api-@PROJECT_VERSION@")
+set(twitter_api_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(twitter_api_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(twitter_api_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(twitter_api_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(twitter_api_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(twitter_api_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(twitter_api_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(twitter_api_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(twitter_api_VERSION @PROJECT_VERSION@)
+set(twitter_api_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(twitter_api_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(twitter_api_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(twitter_api_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
