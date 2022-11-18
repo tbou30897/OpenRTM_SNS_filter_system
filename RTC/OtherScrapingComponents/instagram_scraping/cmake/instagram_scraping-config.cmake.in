@@ -1,0 +1,54 @@
+# instagram_scraping CMake config file
+#
+# This file sets the following variables:
+# instagram_scraping_FOUND - Always TRUE.
+# instagram_scraping_INCLUDE_DIRS - Directories containing the instagram_scraping include files.
+# instagram_scraping_IDL_DIRS - Directories containing the instagram_scraping IDL files.
+# instagram_scraping_LIBRARIES - Libraries needed to use instagram_scraping.
+# instagram_scraping_DEFINITIONS - Compiler flags for instagram_scraping.
+# instagram_scraping_VERSION - The version of instagram_scraping found.
+# instagram_scraping_VERSION_MAJOR - The major version of instagram_scraping found.
+# instagram_scraping_VERSION_MINOR - The minor version of instagram_scraping found.
+# instagram_scraping_VERSION_REVISION - The revision version of instagram_scraping found.
+# instagram_scraping_VERSION_CANDIDATE - The candidate version of instagram_scraping found.
+
+message(STATUS "Found instagram_scraping-@PROJECT_VERSION@")
+set(instagram_scraping_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(instagram_scraping_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(instagram_scraping_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(instagram_scraping_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(instagram_scraping_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(instagram_scraping_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(instagram_scraping_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(instagram_scraping_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(instagram_scraping_VERSION @PROJECT_VERSION@)
+set(instagram_scraping_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(instagram_scraping_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(instagram_scraping_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(instagram_scraping_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
