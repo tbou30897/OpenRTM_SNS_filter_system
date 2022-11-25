@@ -5,7 +5,7 @@
 誹謗中傷の伏せ字化は、形態素解析結果の品詞から推測し、伏せ字化するようになっています。
 
 ## マニュアル
-[マニュアル](https://github.com/tbou30897/OpenRTM_SNS_filter_system/blob/main/Documents/manual20221117.pdf)
+[マニュアル](https://github.com/tbou30897/OpenRTM_SNS_filter_system/blob/main/Documents/manual2022.pdf)
 ## 開発環境
 言語：Python  
 OS：Windows10  
