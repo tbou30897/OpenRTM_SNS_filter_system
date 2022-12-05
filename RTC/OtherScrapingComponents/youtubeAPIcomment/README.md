@@ -2,7 +2,7 @@
 
 ## Overview
 
-ModuleDescription
+Component that uses youtubeAPI to retrieve comments from youtube video URLs
 
 ## Description
 
@@ -21,10 +21,10 @@ ModuleDescription
 |  |  |
 ----|---- 
 | Module Name | youtubeAPI_comment |
-| Description | ModuleDescription |
+| Description | Component that uses youtubeAPI to retrieve comments from youtube video URLs |
 | Version | 1.0.0 |
-| Vendor | VenderName |
-| Category | Category |
+| Vendor | tbou30897 |
+| Category | Information acquisition |
 | Comp. Type | STATIC |
 | Act. Type | PERIODIC |
 | Kind | DataFlowComponent |
@@ -135,12 +135,12 @@ ModuleDescription
 
 #### urlin
 
-
+urlを受け取るポートです
 
 <table>
   <tr>
     <td>DataType</td>
-    <td>RTC::TimedWStringSeq</td>
+    <td>RTC::TimedWString</td>
     <td></td>
   </tr>
   <tr>
@@ -174,7 +174,7 @@ ModuleDescription
 
 #### textout
 
-
+指定されたurlのコメントをリスト型で出力するポートです。
 
 <table>
   <tr>
@@ -192,7 +192,7 @@ ModuleDescription
   </tr>
   <tr>
     <td>Semantics</td>
-    <td colspan="2"></td>
+    <td colspan="2">['コメント1','コメント2']のように出力されます。</td>
   </tr>
   <tr>
     <td>Unit</td>

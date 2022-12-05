@@ -5,7 +5,7 @@
 # <rtc-template block="description">
 """
  @file youtubeAPI_comment.py
- @brief ModuleDescription
+ @brief Component that uses youtubeAPI to retrieve comments from youtube video URLs
  @date $Date$
 
 
@@ -36,10 +36,10 @@ import json
 # <rtc-template block="module_spec">
 youtubeapi_comment_spec = ["implementation_id", "youtubeAPI_comment", 
          "type_name",         "youtubeAPI_comment", 
-         "description",       "ModuleDescription", 
+         "description",       "Component that uses youtubeAPI to retrieve comments from youtube video URLs", 
          "version",           "1.0.0", 
-         "vendor",            "VenderName", 
-         "category",          "Category", 
+         "vendor",            "tbou30897", 
+         "category",          "Information acquisition", 
          "activity_type",     "STATIC", 
          "max_instance",      "1", 
          "language",          "Python", 
@@ -50,7 +50,7 @@ youtubeapi_comment_spec = ["implementation_id", "youtubeAPI_comment",
 # <rtc-template block="component_description">
 ##
 # @class youtubeAPI_comment
-# @brief ModuleDescription
+# @brief Component that uses youtubeAPI to retrieve comments from youtube video URLs
 # 
 # 
 # </rtc-template>
@@ -63,12 +63,15 @@ class youtubeAPI_comment(OpenRTM_aist.DataFlowComponentBase):
     def __init__(self, manager):
         OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
-        self._d_urlin = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
+        self._d_urlin = OpenRTM_aist.instantiateDataType(RTC.TimedWString)
         """
+        urlを受け取るポートです
         """
         self._urlinIn = OpenRTM_aist.InPort("urlin", self._d_urlin)
         self._d_textout = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
+        指定されたurlのコメントをリスト型で出力するポートです。
+         - Semantics: ['コメント1','コメント2']のように出力されます。
         """
         self._textoutOut = OpenRTM_aist.OutPort("textout", self._d_textout)
 
@@ -106,7 +109,7 @@ class youtubeAPI_comment(OpenRTM_aist.DataFlowComponentBase):
         # Set CORBA Service Ports
 		
         return RTC.RTC_OK
-	
+
     def print_video_comment(self,no, video_id, next_page_token):
 
         params = {
@@ -168,13 +171,10 @@ class youtubeAPI_comment(OpenRTM_aist.DataFlowComponentBase):
             # ユーザー名
             user_name = comment_info['snippet']['authorDisplayName']
 
-            #print('{:0=4}-{:0=3}\t{}\t{}\t{}'.format(no, cno, text.replace('\r', '\n').replace('\n', ' '), like_cnt, user_name))
             cno = cno + 1
 
         if 'nextPageToken' in resource:
             self.print_video_reply(no, cno, video_id, resource["nextPageToken"], id)
-
-
     ###
     ## 
     ## The finalize action (on ALIVE->END transition)
@@ -223,6 +223,7 @@ class youtubeAPI_comment(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onActivated(self, ec_id):
+    
         return RTC.RTC_OK
 	
     ##
@@ -250,29 +251,25 @@ class youtubeAPI_comment(OpenRTM_aist.DataFlowComponentBase):
     def onExecute(self, ec_id):
         if self._urlinIn.isNew(): #新しいデータが来たか確認
             self._d_urlin = self._urlinIn.read() #値を読み込む
-            self.url_list = self._d_urlin.data
 
-            for url in self.url_list:
-                    self.URL = 'https://www.googleapis.com/youtube/v3/'
+            self.URL = 'https://www.googleapis.com/youtube/v3/'
 
-                    # ここにAPI KEYを入力
-                    self.API_KEY = ''
+            # ここにAPI KEYを入力
+            self.API_KEY = 'AIzaSyAmTJsk5Is7IZLSera6FHisanDVOsnWWlg'
 
-                    # ここにURLを入力
-                    videourl= url
-
-                    
-
-                    video_id = videourl.split("v=")[1]
-                    no = 1
-                    self.textlist = []
+                        # ここにURLを入力
+            videourl= self._d_urlin.data
 
                         
-                    self.print_video_comment(no, video_id, None)
+            #URLからビデオIDを取得
+            video_id = videourl.split("v=")[1]
+            no = 1
+            self.textlist = []
 
-                    print(self.textlist)
-                    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-    
+                            
+            self.print_video_comment(no, video_id, None)
+
+            print(self.textlist)        
         return RTC.RTC_OK
 	
     ###

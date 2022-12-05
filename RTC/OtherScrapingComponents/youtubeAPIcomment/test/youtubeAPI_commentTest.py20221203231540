@@ -71,9 +71,9 @@ class youtubeAPI_commentTest(OpenRTM_aist.DataFlowComponentBase):
          - Semantics: ['コメント1','コメント2']のように出力されます。
         """
         self._textoutIn = OpenRTM_aist.InPort("textout", self._d_textout)
-        self._d_urlin = OpenRTM_aist.instantiateDataType(RTC.TimedWString)
+        self._d_urlin = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
-        urlを受け取るポートです
+        URLを入力するポートです。
         """
         self._urlinOut = OpenRTM_aist.OutPort("urlin", self._d_urlin)
 

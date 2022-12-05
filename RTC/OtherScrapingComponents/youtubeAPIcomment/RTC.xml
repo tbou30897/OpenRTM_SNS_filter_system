@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<rtc:RtcProfile rtc:version="0.3" rtc:id="RTC:VenderName:Category:youtubeAPI_comment:1.0.0" xmlns:rtc="http://www.openrtp.org/namespaces/rtc" xmlns:rtcExt="http://www.openrtp.org/namespaces/rtc_ext" xmlns:rtcDoc="http://www.openrtp.org/namespaces/rtc_doc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <rtc:BasicInfo xsi:type="rtcExt:basic_info_ext" rtcExt:saveProject="youtubeAPI" rtc:updateDate="2022-11-09T23:20:41.000+09:00" rtc:creationDate="2022-11-09T23:20:41.000+09:00" rtc:version="1.0.0" rtc:vendor="VenderName" rtc:maxInstances="1" rtc:executionType="PeriodicExecutionContext" rtc:executionRate="1000.0" rtc:description="ModuleDescription" rtc:category="Category" rtc:componentKind="DataFlowComponent" rtc:activityType="PERIODIC" rtc:componentType="STATIC" rtc:name="youtubeAPI_comment"/>
+<rtc:RtcProfile rtc:version="0.3" rtc:id="RTC:tbou30897:Information acquisition:youtubeAPI_comment:1.0.0" xmlns:rtc="http://www.openrtp.org/namespaces/rtc" xmlns:rtcExt="http://www.openrtp.org/namespaces/rtc_ext" xmlns:rtcDoc="http://www.openrtp.org/namespaces/rtc_doc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <rtc:BasicInfo xsi:type="rtcExt:basic_info_ext" rtcExt:saveProject="youtubeAPIcomment" rtc:updateDate="2022-12-03T23:12:38.000+09:00" rtc:creationDate="2022-12-03T23:04:31.000+09:00" rtc:abstract="YoutubeAPI を利用して youtube のコメントを取得するコンポーネント。" rtc:version="1.0.0" rtc:vendor="tbou30897" rtc:maxInstances="1" rtc:executionType="PeriodicExecutionContext" rtc:executionRate="1000.0" rtc:description="Component that uses youtubeAPI to retrieve comments from youtube video URLs" rtc:category="Information acquisition" rtc:componentKind="DataFlowComponent" rtc:activityType="PERIODIC" rtc:componentType="STATIC" rtc:name="youtubeAPI_comment">
+        <rtcExt:Properties rtcExt:value="false" rtcExt:name="FSM"/>
+        <rtcExt:Properties rtcExt:value="StaticFSM" rtcExt:name="FSMType"/>
+    </rtc:BasicInfo>
     <rtc:Actions>
         <rtc:OnInitialize xsi:type="rtcDoc:action_status_doc" rtc:implemented="true"/>
         <rtc:OnFinalize xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
@@ -15,7 +18,11 @@
         <rtc:OnStateUpdate xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
         <rtc:OnRateChanged xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
     </rtc:Actions>
-    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="&lt;RTM_ROOT&gt;\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedWStringSeq" rtc:name="urlin" rtc:portType="DataInPort"/>
-    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="RIGHT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="&lt;RTM_ROOT&gt;\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedWStringSeq" rtc:name="textout" rtc:portType="DataOutPort"/>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="&lt;RTM_ROOT&gt;\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedWString" rtc:name="urlin" rtc:portType="DataInPort">
+        <rtcDoc:Doc rtcDoc:operation="" rtcDoc:occerrence="" rtcDoc:unit="" rtcDoc:semantics="" rtcDoc:number="" rtcDoc:type="" rtcDoc:description="urlを受け取るポートです"/>
+    </rtc:DataPorts>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="RIGHT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="&lt;RTM_ROOT&gt;\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedWStringSeq" rtc:name="textout" rtc:portType="DataOutPort">
+        <rtcDoc:Doc rtcDoc:operation="" rtcDoc:occerrence="" rtcDoc:unit="" rtcDoc:semantics="['コメント1','コメント2']のように出力されます。" rtcDoc:number="" rtcDoc:type="" rtcDoc:description="指定されたurlのコメントをリスト型で出力するポートです。"/>
+    </rtc:DataPorts>
     <rtc:Language xsi:type="rtcExt:language_ext" rtc:kind="Python"/>
 </rtc:RtcProfile>
