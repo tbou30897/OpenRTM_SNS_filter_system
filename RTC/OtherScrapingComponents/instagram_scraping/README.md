@@ -2,7 +2,7 @@
 
 ## Overview
 
-ModuleDescription
+This component that uses an instaloader to retrieve information from Instagram.
 
 ## Description
 
@@ -21,10 +21,10 @@ ModuleDescription
 |  |  |
 ----|---- 
 | Module Name | instagram_scraping |
-| Description | ModuleDescription |
+| Description | This component that uses an instaloader to retrieve information from Instagram. |
 | Version | 1.0.0 |
-| Vendor | VenderName |
-| Category | Category |
+| Vendor | tbou30897 |
+| Category | Information acquisition |
 | Comp. Type | STATIC |
 | Act. Type | PERIODIC |
 | Kind | DataFlowComponent |
@@ -135,7 +135,7 @@ ModuleDescription
 
 #### UsernameIn
 
-
+情報を取得したいユーザーのユーザーネームを受信するポートです。
 
 <table>
   <tr>
@@ -174,7 +174,7 @@ ModuleDescription
 
 #### TextOut
 
-
+取得した情報のうち、テキストのみ出力するポートです。
 
 <table>
   <tr>
@@ -210,7 +210,7 @@ ModuleDescription
 
 #### ImageOut
 
-
+取得した情報のうち、画像のみ出力するポートです。
 
 <table>
   <tr>
@@ -252,7 +252,7 @@ ModuleDescription
 
 #### DataType
 
-
+出力したいデータタイプを指定します。<br/>画像を出力したい場合はimage<br/>テキストを出力したい場合はtext<br/>に変更します。
 
 
 <table>

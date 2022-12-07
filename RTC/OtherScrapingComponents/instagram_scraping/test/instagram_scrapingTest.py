@@ -5,7 +5,7 @@
 # <rtc-template block="description">
 """
  @file instagram_scrapingTest.py
- @brief ModuleDescription
+ @brief This component that uses an instaloader to retrieve information from Instagram.
  @date $Date$
 
 
@@ -38,10 +38,10 @@ import instagram_scraping
 # <rtc-template block="module_spec">
 instagram_scrapingtest_spec = ["implementation_id", "instagram_scrapingTest", 
          "type_name",         "instagram_scrapingTest", 
-         "description",       "ModuleDescription", 
+         "description",       "This component that uses an instaloader to retrieve information from Instagram.", 
          "version",           "1.0.0", 
-         "vendor",            "VenderName", 
-         "category",          "Category", 
+         "vendor",            "tbou30897", 
+         "category",          "Information acquisition", 
          "activity_type",     "STATIC", 
          "max_instance",      "1", 
          "language",          "Python", 
@@ -58,7 +58,7 @@ instagram_scrapingtest_spec = ["implementation_id", "instagram_scrapingTest",
 # <rtc-template block="component_description">
 ##
 # @class instagram_scrapingTest
-# @brief ModuleDescription
+# @brief This component that uses an instaloader to retrieve information from Instagram.
 # 
 # 
 # </rtc-template>
@@ -73,14 +73,17 @@ class instagram_scrapingTest(OpenRTM_aist.DataFlowComponentBase):
 
         self._d_TextOut = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
+        取得した情報のうち、テキストのみ出力するポートです。
         """
         self._TextOutIn = OpenRTM_aist.InPort("TextOut", self._d_TextOut)
         self._d_ImageOut = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
+        取得した情報のうち、画像のみ出力するポートです。
         """
         self._ImageOutIn = OpenRTM_aist.InPort("ImageOut", self._d_ImageOut)
         self._d_UsernameIn = OpenRTM_aist.instantiateDataType(RTC.TimedWString)
         """
+        情報を取得したいユーザーのユーザーネームを受信するポートです。
         """
         self._UsernameInOut = OpenRTM_aist.OutPort("UsernameIn", self._d_UsernameIn)
 
@@ -91,7 +94,10 @@ class instagram_scrapingTest(OpenRTM_aist.DataFlowComponentBase):
         # initialize of configuration-data.
         # <rtc-template block="init_conf_param">
         """
-        
+        出力したいデータタイプを指定します。
+		画像を出力したい場合はimage
+		テキストを出力したい場合はtext
+		に変更します。
          - Name:  DataType
          - DefaultValue: image
         """

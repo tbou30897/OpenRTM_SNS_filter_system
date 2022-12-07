@@ -4,18 +4,17 @@
 
 # <rtc-template block="description">
 """
- @file instagram_scraping.py
- @brief This component that uses an instaloader to retrieve information from Instagram.
+ @file instagram_scrapingTest.py
+ @brief ModuleDescription
  @date $Date$
 
 
 """
 # </rtc-template>
 
+from __future__ import print_function
 import sys
 import time
-import instaloader
-import os
 sys.path.append(".")
 
 # Import RTM module
@@ -26,6 +25,8 @@ import OpenRTM_aist
 # Import Service implementation class
 # <rtc-template block="service_impl">
 
+import instagram_scraping
+
 # </rtc-template>
 
 # Import Service stub modules
@@ -35,12 +36,12 @@ import OpenRTM_aist
 
 # This module's spesification
 # <rtc-template block="module_spec">
-instagram_scraping_spec = ["implementation_id", "instagram_scraping", 
-         "type_name",         "instagram_scraping", 
-         "description",       "This component that uses an instaloader to retrieve information from Instagram.", 
+instagram_scrapingtest_spec = ["implementation_id", "instagram_scrapingTest", 
+         "type_name",         "instagram_scrapingTest", 
+         "description",       "ModuleDescription", 
          "version",           "1.0.0", 
-         "vendor",            "tbou30897", 
-         "category",          "Information acquisition", 
+         "vendor",            "VenderName", 
+         "category",          "Category", 
          "activity_type",     "STATIC", 
          "max_instance",      "1", 
          "language",          "Python", 
@@ -56,31 +57,13 @@ instagram_scraping_spec = ["implementation_id", "instagram_scraping",
 
 # <rtc-template block="component_description">
 ##
-# @class instagram_scraping
-# @brief This component that uses an instaloader to retrieve information from Instagram.
+# @class instagram_scrapingTest
+# @brief ModuleDescription
 # 
 # 
-#instloder-template
-class GetImageFromInstagram():
-    def __init__(self, my_user_name, password):
-        self.L = instaloader.Instaloader()
-        self.my_user_name = my_user_name
-        self.password = password
-        self.L.login(my_user_name, password)
-
-    def download_user_posts(self, target_username, limitation=100):
-        posts = instaloader.Profile.from_username(self.L.context, target_username).get_posts()
-
-        for index, post in enumerate(posts, 1):
-            self.L.download_post(post, target_username)
-            print("a")
-            if index >= limitation:
-                print(f'{target_username}の画像を{limitation}枚保存しました。')
-                break
-
 # </rtc-template>
-class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
-	
+class instagram_scrapingTest(OpenRTM_aist.DataFlowComponentBase):
+    
     ##
     # @brief constructor
     # @param manager Maneger Object
@@ -88,42 +71,36 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     def __init__(self, manager):
         OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
-        self._d_UsernameIn = OpenRTM_aist.instantiateDataType(RTC.TimedWString)
-        """
-        情報を取得したいユーザーのユーザーネームを受信するポートです。
-        """
-        self._UsernameInIn = OpenRTM_aist.InPort("UsernameIn", self._d_UsernameIn)
         self._d_TextOut = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
-        取得した情報のうち、テキストのみ出力するポートです。
         """
-        self._TextOutOut = OpenRTM_aist.OutPort("TextOut", self._d_TextOut)
+        self._TextOutIn = OpenRTM_aist.InPort("TextOut", self._d_TextOut)
         self._d_ImageOut = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
-        取得した情報のうち、画像のみ出力するポートです。
         """
-        self._ImageOutOut = OpenRTM_aist.OutPort("ImageOut", self._d_ImageOut)
+        self._ImageOutIn = OpenRTM_aist.InPort("ImageOut", self._d_ImageOut)
+        self._d_UsernameIn = OpenRTM_aist.instantiateDataType(RTC.TimedWString)
+        """
+        """
+        self._UsernameInOut = OpenRTM_aist.OutPort("UsernameIn", self._d_UsernameIn)
 
 
-		
+        
 
 
         # initialize of configuration-data.
         # <rtc-template block="init_conf_param">
         """
-        出力したいデータタイプを指定します。
-		画像を出力したい場合はimage
-		テキストを出力したい場合はtext
-		に変更します。
+        
          - Name:  DataType
          - DefaultValue: image
         """
         self._DataType = ['image']
-		
+        
         # </rtc-template>
 
 
-		 
+         
     ##
     #
     # The initialize action (on CREATED->ALIVE transition)
@@ -134,22 +111,22 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     def onInitialize(self):
         # Bind variables and configuration variable
         self.bindParameter("DataType", self._DataType, "image")
-		
+        
         # Set InPort buffers
-        self.addInPort("UsernameIn",self._UsernameInIn)
-		
+        self.addInPort("TextOut",self._TextOutIn)
+        self.addInPort("ImageOut",self._ImageOutIn)
+        
         # Set OutPort buffers
-        self.addOutPort("TextOut",self._TextOutOut)
-        self.addOutPort("ImageOut",self._ImageOutOut)
-		
+        self.addOutPort("UsernameIn",self._UsernameInOut)
+        
         # Set service provider to Ports
-		
+        
         # Set service consumers to Ports
-		
+        
         # Set CORBA Service Ports
-		
+        
         return RTC.RTC_OK
-	
+    
     ###
     ## 
     ## The finalize action (on ALIVE->END transition)
@@ -159,10 +136,9 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     ## 
     #def onFinalize(self):
     #
-
     #    return RTC.RTC_OK
-	
-    ###
+    
+    #    ##
     ##
     ## The startup action when ExecutionContext startup
     ## 
@@ -174,7 +150,7 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #def onStartup(self, ec_id):
     #
     #    return RTC.RTC_OK
-	
+    
     ###
     ##
     ## The shutdown action when ExecutionContext stop
@@ -187,7 +163,7 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #def onShutdown(self, ec_id):
     #
     #    return RTC.RTC_OK
-	
+    
     ##
     #
     # The activated action (Active state entry action)
@@ -198,11 +174,10 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onActivated(self, ec_id):
-        self.text_name  = []
-        self.image_name = []      
+    
         return RTC.RTC_OK
-	
-    ##
+    
+        ##
     #
     # The deactivated action (Active state exit action)
     #
@@ -214,7 +189,7 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     def onDeactivated(self, ec_id):
     
         return RTC.RTC_OK
-	
+    
     ##
     #
     # The execution action that is invoked periodically
@@ -225,50 +200,9 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onExecute(self, ec_id):
-        self.FileNameList = []
-        if self._UsernameInIn.isNew(): #新しいデータが来たか確認
-            self._d_UsernameIn = self._UsernameInIn.read() #値を読み込む
-            self.Username = self._d_UsernameIn.data
-            print(self.Username)
-
-
-            TARGET_ID = self.Username
-            USER_ID = "デベロッパーユーザーネーム"
-            PASSWORD = "デベロッパーパスワード"
-            number_of_picture = 20 # 取得したい投稿数（推奨:10~100）
-
-            cls = GetImageFromInstagram(USER_ID, PASSWORD)
-            cls.download_user_posts(TARGET_ID, number_of_picture)
-
-            path = "./" + TARGET_ID
-
-            files = os.listdir(path)
-
-            #jpg,pngのみを残してその他を削除
-            for filename in files:
-                if ".jpg" in filename or ".png" in filename and self._DataType[0] == "image":
-                    self.image_name.append("/instagram_scraping/" + TARGET_ID + "/" + filename)
-                elif".txt" in filename and self._DataType[0] == "text":
-                    self.text_name.append("/instagram_scraping/" + TARGET_ID + "/" + filename)
-                else:
-                    os.remove(TARGET_ID + "/" + filename)
-
-            #データを送信（画像の絶対パス）
-            if self._DataType[0] == "image":
-                self._d_ImageOut.data= self.image_name
-                self._ImageOutOut.write()   
-
-            #データを送信（テキスト）
-            elif self._DataType[0] == "text":
-                for name in self.text_name:
-                    f = open(TARGET_ID + "/" + name, 'r')
-                    datalist = f.readlines()
-                    self.FileNameList.append(datalist)
-                self._d_TextOut.data= self.FileNameList
-                self._TextOutOut.write()    
-            
+    
         return RTC.RTC_OK
-	
+    
     ###
     ##
     ## The aborting action when main logic error occurred.
@@ -276,12 +210,12 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     ## @param ec_id target ExecutionContext Id
     ##
     ## @return RTC::ReturnCode_t
-    ##
+    #    #
     ##
     #def onAborting(self, ec_id):
     #
     #    return RTC.RTC_OK
-	
+    
     ###
     ##
     ## The error action in ERROR state
@@ -294,7 +228,7 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #def onError(self, ec_id):
     #
     #    return RTC.RTC_OK
-	
+    
     ###
     ##
     ## The reset action that is invoked resetting
@@ -307,7 +241,7 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #def onReset(self, ec_id):
     #
     #    return RTC.RTC_OK
-	
+    
     ###
     ##
     ## The state update action that is invoked after onExecute() action
@@ -321,7 +255,7 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #def onStateUpdate(self, ec_id):
     #
     #    return RTC.RTC_OK
-	
+    
     ###
     ##
     ## The action that is invoked when execution context's rate is changed
@@ -334,37 +268,44 @@ class instagram_scraping(OpenRTM_aist.DataFlowComponentBase):
     #def onRateChanged(self, ec_id):
     #
     #    return RTC.RTC_OK
-	
+    
+    def runTest(self):
+        return True
 
+def RunTest():
+    manager = OpenRTM_aist.Manager.instance()
+    comp = manager.getComponent("instagram_scrapingTest0")
+    if comp is None:
+        print('Component get failed.', file=sys.stderr)
+        return False
+    return comp.runTest()
 
-
-def instagram_scrapingInit(manager):
-    profile = OpenRTM_aist.Properties(defaults_str=instagram_scraping_spec)
+def instagram_scrapingTestInit(manager):
+    profile = OpenRTM_aist.Properties(defaults_str=instagram_scrapingtest_spec)
     manager.registerFactory(profile,
-                            instagram_scraping,
+                            instagram_scrapingTest,
                             OpenRTM_aist.Delete)
 
 def MyModuleInit(manager):
-    instagram_scrapingInit(manager)
+    instagram_scrapingTestInit(manager)
+    instagram_scraping.instagram_scrapingInit(manager)
 
-    # create instance_name option for createComponent()
-    instance_name = [i for i in sys.argv if "--instance_name=" in i]
-    if instance_name:
-        args = instance_name[0].replace("--", "?")
-    else:
-        args = ""
-  
     # Create a component
-    comp = manager.createComponent("instagram_scraping" + args)
+    comp = manager.createComponent("instagram_scrapingTest")
 
 def main():
-    # remove --instance_name= option
-    argv = [i for i in sys.argv if not "--instance_name=" in i]
-    # Initialize manager
     mgr = OpenRTM_aist.Manager.init(sys.argv)
     mgr.setModuleInitProc(MyModuleInit)
     mgr.activateManager()
-    mgr.runManager()
+    mgr.runManager(True)
+
+    ret = RunTest()
+    mgr.shutdown()
+
+    if ret:
+        sys.exit(0)
+    else:
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
