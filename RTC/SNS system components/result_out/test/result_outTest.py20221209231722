@@ -71,7 +71,7 @@ class result_outTest(OpenRTM_aist.DataFlowComponentBase):
     def __init__(self, manager):
         OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
-        self._d_SentimentScoreIn = OpenRTM_aist.instantiateDataType(RTC.TimedFloatSeq)
+        self._d_SentimentScoreIn = OpenRTM_aist.instantiateDataType(RTC.TimedShortSeq)
         """
         Label（-1~1の感情値）を受信する
         """

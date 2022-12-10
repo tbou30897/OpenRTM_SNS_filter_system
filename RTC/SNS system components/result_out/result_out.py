@@ -68,11 +68,16 @@ class result_out(OpenRTM_aist.DataFlowComponentBase):
     def __init__(self, manager):
         OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
-        self._d_SentimentIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
+        self._d_SentimentScoreIn = OpenRTM_aist.instantiateDataType(RTC.TimedFloatSeq)
         """
-        感情分析結果を受信する
+        Label（-1~1の感情値）を受信する
         """
-        self._SentimentInIn = OpenRTM_aist.InPort("SentimentIn", self._d_SentimentIn)
+        self._SentimentScoreInIn = OpenRTM_aist.InPort("SentimentScoreIn", self._d_SentimentScoreIn)
+        self._d_SentimentLabelIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
+        """
+        Label（ポジティブorネガティブ）を受信する
+        """
+        self._SentimentLabelInIn = OpenRTM_aist.InPort("SentimentLabelIn", self._d_SentimentLabelIn)
         self._d_TextIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
         分かち書き結果を受信する。
@@ -113,7 +118,8 @@ class result_out(OpenRTM_aist.DataFlowComponentBase):
         self.bindParameter("emotion_selection", self._emotion_selection, "0")
 		
         # Set InPort buffers
-        self.addInPort("SentimentIn",self._SentimentInIn)
+        self.addInPort("SentimentScoreIn",self._SentimentScoreInIn)
+        self.addInPort("SentimentLabelIn",self._SentimentLabelInIn)
         self.addInPort("TextIn",self._TextInIn)
         self.addInPort("SwearingIn",self._SwearingInIn)
 		
@@ -175,17 +181,15 @@ class result_out(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onActivated(self, ec_id):
-    
 		#本文、感情、規制単語が入る辞書を作成
         self.word	     = []
         self.swearing    = []
-
         self.sentiment_positive   = []
         self.sentiment_negative   = []
-        self.text        = []
-        self.resultlist  = []          
-		
-        time.sleep(1)       
+        self.text                 = []
+        self.resultlist           = []   
+        self.labelcount           = 0
+        self.scorecount           = 0  
         return RTC.RTC_OK
 	
     ##
@@ -212,7 +216,6 @@ class result_out(OpenRTM_aist.DataFlowComponentBase):
     #
     def onExecute(self, ec_id):
 
-
 		#分かち書き
         if self._TextInIn.isNew(): #新しいデータが来たか確認
             self._d_TextIn = self._TextInIn.read() #値を読み込む
@@ -238,25 +241,26 @@ class result_out(OpenRTM_aist.DataFlowComponentBase):
 
                 # 分かち書きリストを結合、resultlistに格納
                 self.resultlist.append(self.result)
-            print(self.resultlist)
 
 
-		#感情値
-        if self._SentimentInIn.isNew():
-            self._d_SentimentIn = self._SentimentInIn.read()
-            self.sentiment = self._d_SentimentIn.data
 
-            #もしスコアで送られてきていたらfroat型に変換
-            if self.sentiment[0] == "score":
-                del self.sentiment[0]
-                for num,sentiment in enumerate(self.sentiment):
-                    self.sentiment[num] = float(sentiment)
+		#感情値(label)
+        if self._SentimentLabelInIn.isNew():
+            self._d_SentimentIn = self._SentimentLabelInIn.read()
+            self.sentimentLabel = self._d_SentimentLabelIn.data
+            self.labelcount = 1
 
-            elif self.sentiment[0] == "label":
-                del self.sentiment[0]
-                    
+        #感情値(score)
+        if self._SentimentScoreInIn.isNew():
+            self._d_SentimentScoreIn = self._SentimentScoreInIn.read()
+            self.sentimentscore = self._d_SentimentScoreIn.data
+            self.scorecount = 1
+
+        #感情値がどちらも揃っていたら最終結果を出力
+        if self.labelcount == 1 and self.scorecount == 1:
+
 			#ネガティブ、ポジティブのみ出力	
-            for i , sentimentnum in enumerate (self.sentiment):
+            for i , sentimentnum in enumerate (self.sentimentLabel):
                 if self._emotion_selection == 0 and sentimentnum >= 0.3:
                     self.sentiment_positive.append(self.resultlist[i])
 
@@ -272,7 +276,10 @@ class result_out(OpenRTM_aist.DataFlowComponentBase):
             
             else:
                 print("最終結果")
-                print(self.resultlist)    
+                print(self.resultlist) 
+
+            self.scorecount = 0
+            self.labelcount = 0       
         return RTC.RTC_OK
 	
     ###

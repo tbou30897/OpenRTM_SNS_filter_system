@@ -1,8 +1,8 @@
-﻿# result_out
+﻿# sentiment_analysis
 
 ## Overview
 
-This component outputs filtered results based on the results of sentiment analysis, the results of the sharing, and the position of the swear words.
+bert-base-japanese-sentiment based on BERT (google's natural language processing AI model) and component that performs sentiment analysis using BERT (google's natural language processing AI model).
 
 ## Description
 
@@ -20,11 +20,11 @@ This component outputs filtered results based on the results of sentiment analys
 
 |  |  |
 ----|---- 
-| Module Name | result_out |
-| Description | This component outputs filtered results based on the results of sentiment analysis, the results of the sharing, and the position of the swear words. |
+| Module Name | sentiment_analysis |
+| Description | bert-base-japanese-sentiment based on BERT (google's natural language processing AI model) and component that performs sentiment analysis using BERT (google's natural language processing AI model). |
 | Version | 1.0.0 |
 | Vendor | tbou30897 |
-| Category | result output |
+| Category | language_processing |
 | Comp. Type | STATIC |
 | Act. Type | PERIODIC |
 | Kind | DataFlowComponent |
@@ -133,122 +133,14 @@ This component outputs filtered results based on the results of sentiment analys
 
 ### InPorts definition
 
-#### SentimentScoreIn
-
-Label（-1~1の感情値）を受信する
-
-<table>
-  <tr>
-    <td>DataType</td>
-    <td>RTC::TimedFloatSeq</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>IDL file</td>
-    <td colspan="2">BasicDataType.idl</td>
-  </tr>
-  <tr>
-    <td>Number of Data</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Semantics</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Unit</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Occirrence frecency Period</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Operational frecency Period</td>
-    <td colspan="2"></td>
-  </tr>
-</table>
-
-#### SentimentLabelIn
-
-Label（ポジティブorネガティブ）を受信する
-
-<table>
-  <tr>
-    <td>DataType</td>
-    <td>RTC::TimedWStringSeq</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>IDL file</td>
-    <td colspan="2">BasicDataType.idl</td>
-  </tr>
-  <tr>
-    <td>Number of Data</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Semantics</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Unit</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Occirrence frecency Period</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Operational frecency Period</td>
-    <td colspan="2"></td>
-  </tr>
-</table>
-
 #### TextIn
 
-分かち書き結果を受信する。
+他コンポーネントから送られてきたリスト型データを受信する。 
 
 <table>
   <tr>
     <td>DataType</td>
     <td>RTC::TimedWStringSeq</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>IDL file</td>
-    <td colspan="2">BasicDataType.idl</td>
-  </tr>
-  <tr>
-    <td>Number of Data</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Semantics</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Unit</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Occirrence frecency Period</td>
-    <td colspan="2"></td>
-  </tr>
-  <tr>
-    <td>Operational frecency Period</td>
-    <td colspan="2"></td>
-  </tr>
-</table>
-
-#### SwearingIn
-
-悪口の位置のデータを受信する。
-
-<table>
-  <tr>
-    <td>DataType</td>
-    <td>RTC::TimedShortSeq</td>
     <td></td>
   </tr>
   <tr>
@@ -280,50 +172,83 @@ Label（ポジティブorネガティブ）を受信する
 
 ### OutPorts definition
 
+#### ScoreOut
 
-### Service Port definition
+リスト型データで送信されてきた文章を-1~1 の値で感情分析し、リスト型で送信する。 
 
+<table>
+  <tr>
+    <td>DataType</td>
+    <td>RTC::TimedFloatSeq</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>IDL file</td>
+    <td colspan="2">BasicDataType.idl</td>
+  </tr>
+  <tr>
+    <td>Number of Data</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Semantics</td>
+    <td colspan="2">[‘感情値 1’,’感情値 2’,’感情値 3’,’感情値 4’]のように出力</td>
+  </tr>
+  <tr>
+    <td>Unit</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Occirrence frecency Period</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Operational frecency Period</td>
+    <td colspan="2"></td>
+  </tr>
+</table>
 
-### Configuration definition
-
-#### emotion_selection
-
+#### LabelOut
 
 
 
 <table>
   <tr>
     <td>DataType</td>
-    <td colspan="2">float</td>
+    <td>RTC::TimedWStringSeq</td>
+    <td></td>
   </tr>
   <tr>
-    <td>DefaultValue</td>
-    <td>0</td>
-    <td></td>
+    <td>IDL file</td>
+    <td colspan="2">BasicDataType.idl</td>
+  </tr>
+  <tr>
+    <td>Number of Data</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Semantics</td>
+    <td colspan="2">[‘感情(ポジティブ or ネガティブ)’,’感情(ポジティブ or ネガティブ)’]のように出力</td>
   </tr>
   <tr>
     <td>Unit</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Widget</td>
-    <td colspan="2">text</td>
-  </tr>
-  <tr>
-    <td>Step</td>
     <td colspan="2"></td>
   </tr>
   <tr>
-    <td>Constraint</td>
-    <td></td>
-    <td></td>
+    <td>Occirrence frecency Period</td>
+    <td colspan="2"></td>
   </tr>
   <tr>
-    <td>Range</td>
+    <td>Operational frecency Period</td>
     <td colspan="2"></td>
   </tr>
 </table>
+
+
+### Service Port definition
+
+
+### Configuration definition
 
 
 ## Demo

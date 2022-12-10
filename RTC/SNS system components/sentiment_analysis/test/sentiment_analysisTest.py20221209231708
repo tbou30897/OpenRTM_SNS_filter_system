@@ -4,8 +4,8 @@
 
 # <rtc-template block="description">
 """
- @file result_outTest.py
- @brief This component outputs filtered results based on the results of sentiment analysis, the results of the sharing, and the position of the swear words.
+ @file sentiment_analysisTest.py
+ @brief bert-base-japanese-sentiment based on BERT (google's natural language processing AI model) and component that performs sentiment analysis using BERT (google's natural language processing AI model).
  @date $Date$
 
 
@@ -25,7 +25,7 @@ import OpenRTM_aist
 # Import Service implementation class
 # <rtc-template block="service_impl">
 
-import result_out
+import sentiment_analysis
 
 # </rtc-template>
 
@@ -36,33 +36,27 @@ import result_out
 
 # This module's spesification
 # <rtc-template block="module_spec">
-result_outtest_spec = ["implementation_id", "result_outTest", 
-         "type_name",         "result_outTest", 
-         "description",       "This component outputs filtered results based on the results of sentiment analysis, the results of the sharing, and the position of the swear words.", 
+sentiment_analysistest_spec = ["implementation_id", "sentiment_analysisTest", 
+         "type_name",         "sentiment_analysisTest", 
+         "description",       "bert-base-japanese-sentiment based on BERT (google's natural language processing AI model) and component that performs sentiment analysis using BERT (google's natural language processing AI model).", 
          "version",           "1.0.0", 
          "vendor",            "tbou30897", 
-         "category",          "result output", 
+         "category",          "language_processing", 
          "activity_type",     "STATIC", 
          "max_instance",      "1", 
          "language",          "Python", 
          "lang_type",         "SCRIPT",
-         "conf.default.emotion_selection", "0",
-
-         "conf.__widget__.emotion_selection", "text",
-
-         "conf.__type__.emotion_selection", "float",
-
          ""]
 # </rtc-template>
 
 # <rtc-template block="component_description">
 ##
-# @class result_outTest
-# @brief This component outputs filtered results based on the results of sentiment analysis, the results of the sharing, and the position of the swear words.
+# @class sentiment_analysisTest
+# @brief bert-base-japanese-sentiment based on BERT (google's natural language processing AI model) and component that performs sentiment analysis using BERT (google's natural language processing AI model).
 # 
 # 
 # </rtc-template>
-class result_outTest(OpenRTM_aist.DataFlowComponentBase):
+class sentiment_analysisTest(OpenRTM_aist.DataFlowComponentBase):
     
     ##
     # @brief constructor
@@ -71,26 +65,25 @@ class result_outTest(OpenRTM_aist.DataFlowComponentBase):
     def __init__(self, manager):
         OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
-        self._d_SentimentScoreIn = OpenRTM_aist.instantiateDataType(RTC.TimedFloatSeq)
+        self._d_ScoreOut = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
-        Label（-1~1の感情値）を受信する
+        リスト型データで送信されてきた文章を-1~1
+		の値で感情分析し、リスト型で送信する。
+         - Semantics: [‘感情値 1’,’感情値 2’,’感情値 3’,’感情値
+		              4’]のように出力
         """
-        self._SentimentScoreInOut = OpenRTM_aist.OutPort("SentimentScoreIn", self._d_SentimentScoreIn)
-        self._d_SentimentLabelIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
+        self._ScoreOutIn = OpenRTM_aist.InPort("ScoreOut", self._d_ScoreOut)
+        self._d_LabelOut = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
-        Label（ポジティブorネガティブ）を受信する
+         - Semantics: [‘感情(ポジティブ or ネガティブ)’,’感情(ポジティブ or
+		              ネガティブ)’]のように出力
         """
-        self._SentimentLabelInOut = OpenRTM_aist.OutPort("SentimentLabelIn", self._d_SentimentLabelIn)
+        self._LabelOutIn = OpenRTM_aist.InPort("LabelOut", self._d_LabelOut)
         self._d_TextIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
-        分かち書き結果を受信する。
+        他コンポーネントから送られてきたリスト型データを受信する。
         """
         self._TextInOut = OpenRTM_aist.OutPort("TextIn", self._d_TextIn)
-        self._d_SwearingIn = OpenRTM_aist.instantiateDataType(RTC.TimedShortSeq)
-        """
-        悪口の位置のデータを受信する。
-        """
-        self._SwearingInOut = OpenRTM_aist.OutPort("SwearingIn", self._d_SwearingIn)
 
 
         
@@ -98,12 +91,6 @@ class result_outTest(OpenRTM_aist.DataFlowComponentBase):
 
         # initialize of configuration-data.
         # <rtc-template block="init_conf_param">
-        """
-        
-         - Name:  emotion_selection
-         - DefaultValue: 0
-        """
-        self._emotion_selection = [0]
         
         # </rtc-template>
 
@@ -118,15 +105,13 @@ class result_outTest(OpenRTM_aist.DataFlowComponentBase):
     #
     def onInitialize(self):
         # Bind variables and configuration variable
-        self.bindParameter("emotion_selection", self._emotion_selection, "0")
         
         # Set InPort buffers
+        self.addInPort("ScoreOut",self._ScoreOutIn)
+        self.addInPort("LabelOut",self._LabelOutIn)
         
         # Set OutPort buffers
-        self.addOutPort("SentimentScoreIn",self._SentimentScoreInOut)
-        self.addOutPort("SentimentLabelIn",self._SentimentLabelInOut)
         self.addOutPort("TextIn",self._TextInOut)
-        self.addOutPort("SwearingIn",self._SwearingInOut)
         
         # Set service provider to Ports
         
@@ -283,24 +268,24 @@ class result_outTest(OpenRTM_aist.DataFlowComponentBase):
 
 def RunTest():
     manager = OpenRTM_aist.Manager.instance()
-    comp = manager.getComponent("result_outTest0")
+    comp = manager.getComponent("sentiment_analysisTest0")
     if comp is None:
         print('Component get failed.', file=sys.stderr)
         return False
     return comp.runTest()
 
-def result_outTestInit(manager):
-    profile = OpenRTM_aist.Properties(defaults_str=result_outtest_spec)
+def sentiment_analysisTestInit(manager):
+    profile = OpenRTM_aist.Properties(defaults_str=sentiment_analysistest_spec)
     manager.registerFactory(profile,
-                            result_outTest,
+                            sentiment_analysisTest,
                             OpenRTM_aist.Delete)
 
 def MyModuleInit(manager):
-    result_outTestInit(manager)
-    result_out.result_outInit(manager)
+    sentiment_analysisTestInit(manager)
+    sentiment_analysis.sentiment_analysisInit(manager)
 
     # Create a component
-    comp = manager.createComponent("result_outTest")
+    comp = manager.createComponent("sentiment_analysisTest")
 
 def main():
     mgr = OpenRTM_aist.Manager.init(sys.argv)

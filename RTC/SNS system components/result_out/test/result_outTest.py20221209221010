@@ -71,16 +71,11 @@ class result_outTest(OpenRTM_aist.DataFlowComponentBase):
     def __init__(self, manager):
         OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
-        self._d_SentimentScoreIn = OpenRTM_aist.instantiateDataType(RTC.TimedFloatSeq)
+        self._d_SentimentIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
-        Label（-1~1の感情値）を受信する
+        感情分析結果を受信する
         """
-        self._SentimentScoreInOut = OpenRTM_aist.OutPort("SentimentScoreIn", self._d_SentimentScoreIn)
-        self._d_SentimentLabelIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
-        """
-        Label（ポジティブorネガティブ）を受信する
-        """
-        self._SentimentLabelInOut = OpenRTM_aist.OutPort("SentimentLabelIn", self._d_SentimentLabelIn)
+        self._SentimentInOut = OpenRTM_aist.OutPort("SentimentIn", self._d_SentimentIn)
         self._d_TextIn = OpenRTM_aist.instantiateDataType(RTC.TimedWStringSeq)
         """
         分かち書き結果を受信する。
@@ -123,8 +118,7 @@ class result_outTest(OpenRTM_aist.DataFlowComponentBase):
         # Set InPort buffers
         
         # Set OutPort buffers
-        self.addOutPort("SentimentScoreIn",self._SentimentScoreInOut)
-        self.addOutPort("SentimentLabelIn",self._SentimentLabelInOut)
+        self.addOutPort("SentimentIn",self._SentimentInOut)
         self.addOutPort("TextIn",self._TextInOut)
         self.addOutPort("SwearingIn",self._SwearingInOut)
         

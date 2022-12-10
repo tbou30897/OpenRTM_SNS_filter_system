@@ -6,14 +6,14 @@ if(POLICY CMP0053)
   cmake_policy(SET CMP0053 OLD)
 endif()
 
-project(sentiment_analysis)
+project(result_out)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 include("${PROJECT_SOURCE_DIR}/cmake/utils.cmake")
-set(PROJECT_VERSION 1.0.0 CACHE STRING "sentiment_analysis version")
+set(PROJECT_VERSION 1.0.0 CACHE STRING "result_out version")
 set(UPGRADE_GUID "")
 DISSECT_VERSION()
 set(PROJECT_SHORT_VER ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}${PROJECT_VERSION_REVISION})
-set(PROJECT_DESCRIPTION "bert-base-japanese-sentiment based on BERT (google's natural language processing AI model) and component that performs sentiment analysis using BERT (google's natural language processing AI model).")
+set(PROJECT_DESCRIPTION "This component outputs filtered results based on the results of sentiment analysis, the results of the sharing, and the position of the swear words.")
 set(PROJECT_VENDOR "tbou30897")
 set(PROJECT_MAINTAINER "unknown")
 if(WIN32)
@@ -21,7 +21,7 @@ if(WIN32)
 else()
     set(PYTHON_COMMAND "python3")
 endif()
-set(PROJECT_TYPE "${PYTHON_COMMAND}/language_processing")
+set(PROJECT_TYPE "${PYTHON_COMMAND}/result output")
 
 find_package(OpenRTM REQUIRED)
 set(RTM_VER ${OPENRTM_VERSION})
@@ -86,11 +86,11 @@ option(BUILD_IDL "Build and install idl" ON)
 
 
 set(EXEC_FILES ""
-               sentiment_analysis.py
+               result_out.py
 )
 
 set(OTHER_SRCS CMakeLists.txt
-               RTC.xml sentiment_analysis.conf rtc.conf)
+               RTC.xml result_out.conf rtc.conf)
 
 # check python installed
 find_package(PythonInterp 3)
