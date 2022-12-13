@@ -121,14 +121,7 @@ class sentiment_analysis(OpenRTM_aist.DataFlowComponentBase):
         return RTC.RTC_OK
 	
 
-    def SentimentAnalysis(self):
-		# 感情分析の実行
-        model = AutoModelForSequenceClassification.from_pretrained('daigo/bert-base-japanese-sentiment') #AIモデルを取得
-        tokenizer = BertJapaneseTokenizer.from_pretrained('cl-tohoku/bert-base-japanese-whole-word-masking')#トークンを取得
-        nlp = pipeline("sentiment-analysis",model=model,tokenizer=tokenizer)
 
-        self.sentiment = nlp(self.text)#nlp(感情分析したいテキスト)で感情分析
-        print(self.sentiment)
     ###
     ## 
     ## The finalize action (on ALIVE->END transition)
@@ -177,6 +170,10 @@ class sentiment_analysis(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onActivated(self, ec_id):	
+        self.model = AutoModelForSequenceClassification.from_pretrained('daigo/bert-base-japanese-sentiment') #AIモデルを取得
+        self.tokenizer = BertJapaneseTokenizer.from_pretrained('cl-tohoku/bert-base-japanese-whole-word-masking')#トークンを取得
+        self.nlp = pipeline("sentiment-analysis",model=self.model,tokenizer=self.tokenizer)
+
 
         self.sentiment_list = []
         self.outlist = []
@@ -218,10 +215,12 @@ class sentiment_analysis(OpenRTM_aist.DataFlowComponentBase):
             self.textlist = self._d_TextIn.data
 
 
-            for self.text in self.textlist:
+
+            for text in self.textlist:
 
                 #感情分析の実行
-                self.SentimentAnalysis()
+                self.sentiment = self.nlp(text)#self.nlp(感情分析したいテキスト)で感情分析
+                print(self.sentiment)
 
                 #label、scoreを送信
                 self.sentimentlabel.append(self.sentiment[0]['label'])
